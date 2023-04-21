@@ -26,8 +26,7 @@
 
           <q-card-section>
             <q-form
-              @submit="onSubmit"
-              @reset="onReset"
+              @submit="createAppointment"
               class="q-gutter-md"
             >
 
@@ -77,8 +76,23 @@
           </q-card-section>
         </q-card>
       </q-dialog>
-
     </div>
+
+    <q-dialog v-model="apptCreatedAlert">
+      <q-card class="bg-green">
+        <q-card-section>
+          <div class="text-h6 text-white">Success!</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none text-white">
+          The appointment for {{this.title}} {{this.name}} has been created!
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="OK" color="white" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
     <AppointmentsList />
   </div>
@@ -87,6 +101,7 @@
 <script>
 import AppointmentsList from '../components/AppointmentsList.vue'
 import { ref } from 'vue'
+import axios from 'axios'
 
 export default {
   name: 'SecretaryView',
@@ -99,7 +114,8 @@ export default {
       assignee: ref(null),
       options: ['Mr', 'Ms'],
       dialog: ref(false),
-      maximizedToggle: ref(true)
+      maximizedToggle: ref(true),
+      apptCreatedAlert: ref(false),
     }
   },
   components: {
@@ -113,8 +129,21 @@ export default {
     },
     createAppointment(){
       this.dialog = false;
-      //call method to create appointment
-    }
+      let formData = new FormData();
+      formData.append('title', this.title);
+      formData.append('cName', this.name);
+      formData.append('startDate', this.startDate);
+      formData.append('endDate', this.endDate);
+      formData.append('assignee', this.assignee);
+      formData.append('status', 'Pending');
+
+      axios.post('http://localhost:18091/api/addappointment', formData)
+      .then((response) => {
+        console.log(response)
+        this.apptCreatedAlert = true;
+      })
+      .catch(err => console.warn(err));
+      }
   }
 }
 </script>

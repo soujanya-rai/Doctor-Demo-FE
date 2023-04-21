@@ -4,7 +4,7 @@
       <q-toolbar-title>Appointments</q-toolbar-title>
     </q-toolbar>
 
-    <div class="q-pa-md">
+    <div class="q-pa-md" v-if=renderTable>
       <q-table
         flat bordered
         :rows="appointments"
@@ -38,56 +38,17 @@
 import { ref } from 'vue'
 import axios from 'axios'
 
-const appointments = [ {
-  id: 1,
-  title: 'Mr',
-  name: 'Ruddy Jedrzej',
-  email: 'rjedrzej0@discuz.net',
-  startDate: '30-04-2023 10:00',
-  endDate: '30-04-2023 10:30',
-  assignee: 'Dr Pede',
-  status: 'Pending'
-}, {
-  id: 2,
-  title: 'Ms',
-  name: 'Mallorie Alessandrini',
-  email: 'malessandrini1@marketwatch.com',
-  startDate: '30-04-2023 11:00',
-  endDate: '30-04-2023 10:30',
-  assignee: 'Dr Höffner',
-  status: 'Pending'
-}, {
-  id: 3,
-  title: 'Ms',
-  name: 'Elisabetta Wicklen',
-  email: 'ewicklen2@microsoft.com',
-  startDate: '02-05-2023 09:00',
-  endDate: '02-05-2023 09:30',
-  assignee: 'Dr Schmitt',
-  status: 'Pending'
-}, {
-  id: 4,
-  title: 'Mr',
-  name: 'Seka Fawdrey',
-  email: 'sfawdrey3@wired.com',
-  startDate: '03-05-2023 10:00',
-  endDate: '03-05-2023 10:30',
-  assignee: 'Dr Höffner',
-  status: 'Pending'
-} ]
-
 export default {
   setup () {
     return {
-      appointments,
       filter: ref(''),
       columns: [
         {
-          name: 'name',
+          name: 'customerName',
           required: true,
           label: 'Name',
           align: 'center',
-          field: row => row.name,
+          field: row => row.customerName,
           format: val => `${val}`,
           sortable: true
         },
@@ -96,12 +57,21 @@ export default {
         { name: 'endDate', align: 'center', label: 'End Date', field: 'endDate' },
         { name: 'assignee', align: 'center', label: 'Assignee', field: 'assignee' },
         { name: 'status', align: 'center', label: 'Status', field: 'status' }
-      ]
+      ],
+      appointments : [],
+      refreshKey: 0,
     }
   },
   created(){
     axios.get('http://localhost:18091/api/appointments')
-      .then(response => console.log(response.data));
+    .then((response) => {
+      for (var i=0; i<response.data.length;i++) {
+        var apptObj = response.data[i]
+        this.appointments.push(apptObj)
+      }  
+    })
+    this.refreshKey++;
+    //console.log(this.appointments);
     if (this.$route.params.user == 'doctor') {
       this.columns.push({ name: 'actions', align: 'center', label: 'Action' },);
     }
@@ -110,6 +80,14 @@ export default {
     isDoctor(){
       if (this.$route.params.user == 'doctor')
         return true;
+    },
+    renderTable(){
+      this.refreshKey
+      if(this.appointments != []) {
+        console.log(this.appointments)
+        return true;
+      }
+      return false;
     }
   },
   methods:{

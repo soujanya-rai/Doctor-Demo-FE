@@ -52,8 +52,8 @@ export default {
       //axios.get('http://localhost:18091/api/appointments')
       //  .then(response => console.log(response));
       
-      this.$router.push({ name: 'doctorLogin', params: { user: 'doctor' } })
-      //this.$router.push({ name: 'secretaryLogin'})
+      //this.$router.push({ name: 'doctorLogin', params: { user: 'doctor' } })
+      this.$router.push({ name: 'secretaryLogin'})
     }
   }
 }
