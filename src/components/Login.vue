@@ -26,13 +26,14 @@
 
 <script>
 import axios from 'axios'
+import { ref } from 'vue'
 
 export default {
   name: 'Login',
   data () {
     return {
-      email: 'doc@mail.com',
-      password: 'SamplePwd1'
+      email: ref(''),
+      password: ref('')
     }
   },
   methods: {

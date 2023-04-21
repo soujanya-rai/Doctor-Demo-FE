@@ -50,21 +50,57 @@
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
               />
 
-              <q-input
-                filled
-                v-model="startDate"
-                label="Start Date and Time *"
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
-              />
+              <q-input filled v-model="startDate" :rules="[ val => val && val.length > 0 || 'Please type something']">
+                <template v-slot:prepend>
+                  <q-icon name="event" class="cursor-pointer">
+                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                      <q-date v-model="startDate" mask="YYYY-MM-DD HH:mm">
+                        <div class="row items-center justify-end">
+                          <q-btn v-close-popup label="Close" color="primary" flat />
+                        </div>
+                      </q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
 
-              <q-input
-                filled
-                v-model="endDate"
-                label="End Date and Time *"
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
-              />
+                <template v-slot:append>
+                  <q-icon name="access_time" class="cursor-pointer">
+                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                      <q-time v-model="startDate" mask="YYYY-MM-DD HH:mm" format24h>
+                        <div class="row items-center justify-end">
+                          <q-btn v-close-popup label="Close" color="primary" flat />
+                        </div>
+                      </q-time>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+
+              <q-input filled v-model="endDate" :rules="[ val => val && val.length > 0 || 'Please type something']">
+                <template v-slot:prepend>
+                  <q-icon name="event" class="cursor-pointer">
+                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                      <q-date v-model="endDate" mask="YYYY-MM-DD HH:mm">
+                        <div class="row items-center justify-end">
+                          <q-btn v-close-popup label="Close" color="primary" flat />
+                        </div>
+                      </q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+
+                <template v-slot:append>
+                  <q-icon name="access_time" class="cursor-pointer">
+                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                      <q-time v-model="endDate" mask="YYYY-MM-DD HH:mm" format24h>
+                        <div class="row items-center justify-end">
+                          <q-btn v-close-popup label="Close" color="primary" flat />
+                        </div>
+                      </q-time>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
 
               <q-input
                 filled
