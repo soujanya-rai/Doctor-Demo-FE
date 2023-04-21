@@ -139,7 +139,6 @@ export default {
 
       axios.post('http://localhost:18091/api/addappointment', formData)
       .then((response) => {
-        console.log(response)
         this.apptCreatedAlert = true;
       })
       .catch(err => console.warn(err));

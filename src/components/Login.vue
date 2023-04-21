@@ -37,23 +37,17 @@ export default {
   },
   methods: {
     login() {
-      /*
-      axios
-      .post('http://localhost:18081/router', {
-        ServiceName: 'WS_FetchAppointments',
+      let formData = new FormData();
+      formData.append('email', this.email);
+      formData.append('password', this.password);
+      axios.post('http://localhost:18091/api/login', formData)
+      .then((response) => {
+        if(response.data == "Doctor")
+          this.$router.push({ name: 'doctorLogin', params: { user: 'doctor' } })
+        else if(response.data == "Secretary")
+          this.$router.push({ name: 'secretaryLogin'})
       })
-      .then(response => console.log(response))
-      .catch(error => {
-        this.errorMessage = error.message;
-        console.error("There was an error!", error);
-      });
-      */
-      
-      //axios.get('http://localhost:18091/api/appointments')
-      //  .then(response => console.log(response));
-      
-      //this.$router.push({ name: 'doctorLogin', params: { user: 'doctor' } })
-      this.$router.push({ name: 'secretaryLogin'})
+      .catch(err => console.log('Something went wrong!'));
     }
   }
 }
