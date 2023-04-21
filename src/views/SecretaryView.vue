@@ -1,5 +1,10 @@
 <template>
   <div>
+    <q-bar class="bg-deep-orange">
+      <div class="cursor-pointer text-white">Hello, Secretary</div>
+      <q-space />
+      <q-btn flat icon="logout" @click="$router.push('/')"></q-btn>
+    </q-bar>
 
     <div class="q-pa-md row items-start q-gutter-md">
       <q-btn unelevated color="primary" @click=showAddApptDialog v-if="!this.dialog">
@@ -95,6 +100,7 @@
     </q-dialog>
 
     <AppointmentsList :key="componentKey" />
+
   </div>
 </template>
 

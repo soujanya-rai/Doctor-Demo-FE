@@ -1,51 +1,51 @@
 <template>
-  <div class="q-pa-md window-height window-width">
-    <q-toolbar class="bg-primary text-white shadow-2">
-      <q-toolbar-title>Appointments</q-toolbar-title>
-    </q-toolbar>
+  <div>
+    <div class="q-pa-md window-height window-width">
 
-    <div class="q-pa-md">
-      <q-table
-        flat bordered
-        :rows="appointments"
-        :columns="columns"
-        row-key="id"
-        separator="horizontal"
-        :filter="filter"
-      >
-        <template v-slot:top-right>
-          <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
-        </template>
+      <div class="q-pa-md">
+        <q-table
+          title="Appointments"
+          flat bordered
+          :rows="appointments"
+          :columns="columns"
+          row-key="id"
+          separator="horizontal"
+          :filter="filter"
+        >
+          <template v-slot:top-right>
+            <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </template>
 
-        <template v-slot:body-cell-actions="props" v-if=isDoctor>
-          <q-td :props="props">
-            <q-btn icon="done" color="green" @click="onEdit(props.row)"></q-btn>
-            <q-btn icon="delete" color="red" @click="onDelete(props.row)"></q-btn>
-          </q-td>
-        </template>
-      </q-table>
+          <template v-slot:body-cell-actions="props" v-if=isDoctor>
+            <q-td :props="props">
+              <q-btn icon="done" color="green" @click="onEdit(props.row)"></q-btn>
+              <q-btn icon="delete" color="red" @click="onDelete(props.row)"></q-btn>
+            </q-td>
+          </template>
+        </q-table>
+      </div>
+
+      <q-dialog v-model="showAlert">
+        <q-card class="bg-green">
+          <q-card-section>
+            <div class="text-h6 text-white">Success!</div>
+          </q-card-section>
+
+          <q-card-section class="q-pt-none text-white">
+            {{alertMessage}}
+          </q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn flat label="OK" color="white" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+
     </div>
-
-    <q-dialog v-model="showAlert">
-      <q-card class="bg-green">
-        <q-card-section>
-          <div class="text-h6 text-white">Success!</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none text-white">
-          {{alertMessage}}
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn flat label="OK" color="white" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-
   </div>
 </template>
 
@@ -65,7 +65,7 @@ export default {
           align: 'center',
           field: row => row.id,
           format: val => `${val}`,
-          sortable: true
+          sortable: true,
         },
         { name: 'customerName', required: true, label: 'Name', align: 'center', field: 'customerName',sortable: true },
         { name: 'title', align: 'center', label: 'Title', field: 'title', sortable: true },
@@ -76,14 +76,14 @@ export default {
       ],
       appointments: ref([]),
       showAlert: ref(false),
-      alertMessage: ref(''),
+      alertMessage: ref('')
     }
   },
   created(){
     this.getAppointments();
-    if (this.$route.params.user == 'doctor') {
+    if (this.$route.params.user == 'doctor')
       this.columns.push({ name: 'actions', align: 'center', label: 'Action' },);
-    }
+    
   },
   computed:{
     isDoctor(){
