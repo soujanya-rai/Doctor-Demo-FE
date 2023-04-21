@@ -94,7 +94,7 @@
       </q-card>
     </q-dialog>
 
-    <AppointmentsList />
+    <AppointmentsList :key="componentKey" />
   </div>
 </template>
 
@@ -116,6 +116,7 @@ export default {
       dialog: ref(false),
       maximizedToggle: ref(true),
       apptCreatedAlert: ref(false),
+      componentKey: ref(0)
     }
   },
   components: {
@@ -139,6 +140,7 @@ export default {
 
       axios.post('http://localhost:18091/api/addappointment', formData)
       .then((response) => {
+        this.componentKey += 1;
         this.apptCreatedAlert = true;
       })
       .catch(err => console.warn(err));
