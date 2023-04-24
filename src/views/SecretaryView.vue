@@ -50,7 +50,7 @@
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
               />
 
-              <q-input filled v-model="startDate" :rules="[ val => val && val.length > 0 || 'Please type something']">
+              <q-input filled v-model="startDate" label="Start Date Time *" :rules="[ val => val && val.length > 0 || 'Please type something']">
                 <template v-slot:prepend>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -76,7 +76,7 @@
                 </template>
               </q-input>
 
-              <q-input filled v-model="endDate" :rules="[ val => val && val.length > 0 || 'Please type something']">
+              <q-input filled v-model="endDate" label="End Date Time *" :rules="[ val => val && val.length > 0 || 'Please type something']">
                 <template v-slot:prepend>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
